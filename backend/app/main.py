@@ -12,6 +12,7 @@ from fastapi.responses import JSONResponse
 from backend.app.config import get_settings
 from backend.app.database import check_database_connection, Base, engine
 from backend.app.utils.logging_config import setup_logging, get_logger
+from backend.app.api.datasets import router as datasets_router
 
 settings = get_settings()
 setup_logging("DEBUG" if settings.DEBUG else "INFO")
@@ -75,6 +76,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Include API Routers
+app.include_router(datasets_router, prefix=settings.API_V1_PREFIX)
 
 
 # Global Exception Handlers
@@ -155,3 +160,4 @@ async def health_check():
             "local_ollama_enabled": settings.USE_LOCAL_OLLAMA,
         },
     }
+

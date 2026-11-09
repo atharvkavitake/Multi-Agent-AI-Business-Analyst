@@ -63,3 +63,4 @@ def check_database_connection() -> bool:
     except Exception as e:
         logger.error(f"Database connection failed: {e}")
         return False
+
