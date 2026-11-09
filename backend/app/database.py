@@ -16,6 +16,8 @@ logger = get_logger(__name__)
 settings = get_settings()
 
 database_url = settings.DATABASE_URL
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 # Handle SQLite directory creation automatically
 connect_args = {}

@@ -1,0 +1,40 @@
+# Render Blueprint Configuration (Infrastructure-as-Code)
+# Multi-Agent AI Business Analyst & Automated Business Intelligence System
+# Free-Tier Deployment Configuration
+
+services:
+  - type: web
+    name: multi-agent-bi-system
+    runtime: python
+    region: oregon # or ohio, frankfurt, singapore
+    plan: free
+    branch: master
+    buildCommand: "pip install --upgrade pip && pip install -r backend/requirements.txt"
+    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.10.11"
+      - key: ENVIRONMENT
+        value: "production"
+      - key: DEBUG
+        value: "false"
+      - key: HOST
+        value: "0.0.0.0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DATABASE_URL
+        sync: false # Set in Render Dashboard: postgresql://... from Supabase
+      - key: OPENROUTER_API_KEY
+        sync: false # Set in Render Dashboard: sk-or-... from OpenRouter
+      - key: DEFAULT_LLM_MODEL
+        value: "google/gemini-2.0-flash-exp:free"
+      - key: FALLBACK_LLM_MODEL
+        value: "meta-llama/llama-3.3-70b-instruct:free"
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "25"
+      - key: ALLOW_GUEST_MODE
+        value: "true"
