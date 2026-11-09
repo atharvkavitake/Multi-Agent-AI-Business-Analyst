@@ -1,0 +1,61 @@
+Transaction_ID,Date,Customer_ID,Customer_Segment,Region,Category,Sub_Category,Product_Name,Quantity,Sales,Cost,Profit,Discount
+TXN-1001,2024-01-05,CUST-201,Consumer,East,Technology,Phones,SmartPhone Pro Max,2,1799.98,1200.00,599.98,0.00
+TXN-1002,2024-01-08,CUST-205,Corporate,West,Furniture,Chairs,Ergonomic Executive Chair,4,1200.00,850.00,350.00,0.05
+TXN-1003,2024-01-12,CUST-210,Home Office,North,Office Supplies,Storage,Heavy Duty Filing Cabinet,3,450.00,320.00,130.00,0.00
+TXN-1004,2024-01-18,CUST-215,Consumer,South,Technology,Accessories,Wireless Noise Cancelling Headset,5,750.00,450.00,300.00,0.10
+TXN-1005,2024-01-22,CUST-220,Corporate,East,Furniture,Tables,Conference Table 8ft,1,1450.00,1100.00,350.00,0.00
+TXN-1006,2024-01-26,CUST-225,Consumer,West,Office Supplies,Paper,Premium Multipurpose Paper 5-Pack,10,250.00,150.00,100.00,0.00
+TXN-1007,2024-02-02,CUST-230,Home Office,North,Technology,Laptops,Ultrabook Core i7,1,1299.99,950.00,349.99,0.00
+TXN-1008,2024-02-07,CUST-235,Corporate,South,Office Supplies,Binders,Heavyweight 3-Ring Binder Case,20,380.00,240.00,140.00,0.10
+TXN-1009,2024-02-14,CUST-240,Consumer,East,Furniture,Bookcases,Modular 5-Tier Bookcase,2,520.00,410.00,110.00,0.05
+TXN-1010,2024-02-19,CUST-245,Corporate,West,Technology,Phones,Flagship 5G Handset,3,2399.97,1650.00,749.97,0.00
+TXN-1011,2024-02-24,CUST-250,Home Office,North,Office Supplies,Art,Professional Marker Set 72-Color,4,180.00,100.00,80.00,0.00
+TXN-1012,2024-02-28,CUST-255,Consumer,South,Furniture,Chairs,Mesh Task Stool,2,320.00,260.00,60.00,0.00
+TXN-1013,2024-03-04,CUST-260,Corporate,East,Technology,Laptops,Workstation Laptop 32GB,2,3600.00,2600.00,1000.00,0.00
+TXN-1014,2024-03-09,CUST-265,Consumer,West,Office Supplies,Storage,Plastic Storage Bins Pack,8,280.00,190.00,90.00,0.05
+TXN-1015,2024-03-15,CUST-270,Home Office,South,Furniture,Tables,Adjustable Standing Desk,1,680.00,510.00,170.00,0.00
+TXN-1016,2024-03-21,CUST-275,Corporate,North,Technology,Accessories,Mechanical Keyboard Pro,6,720.00,420.00,300.00,0.00
+TXN-1017,2024-03-26,CUST-280,Consumer,East,Office Supplies,Paper,Glossy Photo Paper Case,12,360.00,220.00,140.00,0.00
+TXN-1018,2024-03-30,CUST-285,Corporate,West,Furniture,Bookcases,Solid Oak Bookshelf,1,850.00,620.00,230.00,0.10
+TXN-1019,2024-04-03,CUST-201,Consumer,East,Technology,Phones,SmartPhone Pro Max,1,899.99,600.00,299.99,0.00
+TXN-1020,2024-04-08,CUST-290,Corporate,South,Technology,Laptops,Enterprise Fleet Laptops,15,18750.00,14000.00,4750.00,0.15
+TXN-1021,2024-04-14,CUST-295,Home Office,West,Office Supplies,Appliances,Compact Beverage Cooler,1,280.00,220.00,60.00,0.00
+TXN-1022,2024-04-19,CUST-300,Consumer,North,Furniture,Chairs,Swivel Desk Chair,3,480.00,360.00,120.00,0.00
+TXN-1023,2024-04-25,CUST-305,Corporate,East,Office Supplies,Storage,Locking Document Safe,2,540.00,390.00,150.00,0.05
+TXN-1024,2024-04-29,CUST-310,Home Office,South,Technology,Accessories,4K UltraHD Webcam,4,560.00,340.00,220.00,0.00
+TXN-1025,2024-05-04,CUST-315,Consumer,West,Furniture,Tables,Dining Table Set,1,1100.00,820.00,280.00,0.00
+TXN-1026,2024-05-10,CUST-320,Corporate,North,Office Supplies,Binders,Clear Presentation Covers 100pk,15,225.00,135.00,90.00,0.00
+TXN-1027,2024-05-16,CUST-325,Home Office,East,Technology,Laptops,Convertible 2-in-1 Tablet,2,1700.00,1250.00,450.00,0.05
+TXN-1028,2024-05-22,CUST-330,Consumer,South,Furniture,Bookcases,Corner Display Unit,1,390.00,310.00,80.00,0.00
+TXN-1029,2024-05-27,CUST-335,Corporate,West,Technology,Accessories,Laser Presentation Clicker,8,320.00,160.00,160.00,0.00
+TXN-1030,2024-05-31,CUST-340,Consumer,North,Office Supplies,Fasteners,Industrial Stapler Kit,5,175.00,110.00,65.00,0.00
+TXN-1031,2024-06-05,CUST-345,Home Office,East,Furniture,Chairs,Leather Recliner Desk Chair,1,650.00,480.00,170.00,0.00
+TXN-1032,2024-06-11,CUST-350,Corporate,South,Technology,Phones,VoIP Office Desk Phone Set,6,1200.00,840.00,360.00,0.10
+TXN-1033,2024-06-17,CUST-355,Consumer,West,Office Supplies,Paper,Recycled Copy Paper Pallet,25,750.00,450.00,300.00,0.00
+TXN-1034,2024-06-22,CUST-360,Corporate,North,Furniture,Tables,Training Room Folding Tables,4,960.00,720.00,240.00,0.00
+TXN-1035,2024-06-28,CUST-365,Home Office,East,Technology,Laptops,Developer Ultrabook 16-inch,1,1899.00,1350.00,549.00,0.00
+TXN-1036,2024-07-03,CUST-370,Consumer,South,Office Supplies,Art,Drafting Pen Set,6,150.00,90.00,60.00,0.00
+TXN-1037,2024-07-09,CUST-375,Corporate,West,Furniture,Chairs,High Back Mesh Chair,5,1150.00,800.00,350.00,0.05
+TXN-1038,2024-07-15,CUST-380,Home Office,North,Technology,Accessories,USB-C Dual 4K Docking Station,3,690.00,420.00,270.00,0.00
+TXN-1039,2024-07-21,CUST-385,Consumer,East,Office Supplies,Storage,Underdesk Mobile Pedestal,2,380.00,260.00,120.00,0.00
+TXN-1040,2024-07-27,CUST-390,Corporate,South,Furniture,Bookcases,Open Shelf Steel Unit,3,720.00,540.00,180.00,0.00
+TXN-1041,2024-08-02,CUST-395,Home Office,West,Technology,Phones,Rugged Smartphone Field Edition,2,1100.00,780.00,320.00,0.00
+TXN-1042,2024-08-08,CUST-400,Consumer,North,Office Supplies,Paper,Cardstock Colored Paper,8,160.00,100.00,60.00,0.00
+TXN-1043,2024-08-14,CUST-405,Corporate,East,Furniture,Tables,Executive Standing Desk Motorized,2,1700.00,1200.00,500.00,0.00
+TXN-1044,2024-08-20,CUST-410,Consumer,South,Technology,Accessories,Bluetooth Optical Mouse 10-Pack,10,350.00,200.00,150.00,0.00
+TXN-1045,2024-08-26,CUST-415,Home Office,West,Office Supplies,Binders,Ring Binder Heavy Duty 2-inch,14,210.00,140.00,70.00,0.00
+TXN-1046,2024-09-02,CUST-420,Corporate,North,Technology,Laptops,Data Science Workstation Rig,3,6600.00,4800.00,1800.00,0.05
+TXN-1047,2024-09-08,CUST-425,Consumer,East,Furniture,Chairs,Conference Guest Chairs 4pk,1,480.00,360.00,120.00,0.00
+TXN-1048,2024-09-14,CUST-430,Home Office,South,Office Supplies,Appliances,Personal Air Purifier Desk,2,260.00,190.00,70.00,0.00
+TXN-1049,2024-09-20,CUST-435,Corporate,West,Technology,Accessories,Curved Ultrawide Monitor 34-inch,4,2360.00,1600.00,760.00,0.00
+TXN-1050,2024-09-26,CUST-440,Consumer,North,Furniture,Tables,Small Coffee Break Table,2,340.00,250.00,90.00,0.00
+TXN-1051,2024-10-02,CUST-445,Corporate,East,Furniture,Tables,Boardroom Custom Conference Table,1,4200.00,4800.00,-600.00,0.35
+TXN-1052,2024-10-08,CUST-450,Home Office,South,Office Supplies,Paper,Eco Bright White Paper 10 Reams,5,220.00,140.00,80.00,0.00
+TXN-1053,2024-10-14,CUST-455,Consumer,West,Technology,Phones,Compact Business Smartphone,3,1497.00,1050.00,447.00,0.00
+TXN-1054,2024-10-20,CUST-460,Corporate,North,Office Supplies,Storage,Steel Lateral File Cabinet,2,640.00,460.00,180.00,0.05
+TXN-1055,2024-10-26,CUST-465,Home Office,East,Furniture,Bookcases,Glass Door Display Cabinet,1,780.00,560.00,220.00,0.00
+TXN-1056,2024-11-03,CUST-470,Consumer,South,Technology,Laptops,Touchscreen Ultrabook,1,1149.00,820.00,329.00,0.00
+TXN-1057,2024-11-09,CUST-475,Corporate,West,Office Supplies,Binders,Economy Binder 1-inch 50pk,1,180.00,120.00,60.00,0.00
+TXN-1058,2024-11-15,CUST-480,Home Office,North,Furniture,Chairs,Ergonomic Drafting Chair,2,540.00,390.00,150.00,0.00
+TXN-1059,2024-11-21,CUST-485,Consumer,East,Technology,Accessories,Surge Protector Strip 6-Outlet,15,225.00,120.00,105.00,0.00
+TXN-1060,2024-11-27,CUST-490,Corporate,South,Furniture,Tables,Collaborative Media Table,2,1900.00,1400.00,500.00,0.00
