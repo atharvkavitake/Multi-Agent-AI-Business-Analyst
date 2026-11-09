@@ -17,6 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
         loadExistingDataset(existingDatasetId);
     }
 
+    // Helper: Safe HTML escaping to prevent XSS and layout breakage
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     // Drag and Drop Events
     if (dropzone) {
         ["dragenter", "dragover"].forEach(name => {
@@ -112,41 +123,47 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (c.data_type === "numeric") typeBadge = "badge-success";
                 if (c.data_type === "datetime") typeBadge = "badge-warning";
 
-                const sampleStr = c.sample_values ? c.sample_values.slice(0, 3).join(", ") : "—";
+                const sampleList = c.sample_values && Array.isArray(c.sample_values)
+                    ? c.sample_values.slice(0, 3).map(v => escapeHtml(String(v)))
+                    : [];
+                const sampleStr = sampleList.length > 0 ? sampleList.join(", ") : "—";
 
                 return `
                     <tr>
-                        <td class="fw-bold">${c.name}</td>
-                        <td><span class="badge-custom ${typeBadge}">${c.data_type}</span></td>
-                        <td><code class="small text-secondary">${c.raw_type}</code></td>
-                        <td>${c.null_count} (${c.null_percentage}%)</td>
+                        <td class="table-col-header" title="${escapeHtml(c.name)}">${escapeHtml(c.name)}</td>
+                        <td><span class="badge-custom ${typeBadge}">${escapeHtml(c.data_type)}</span></td>
+                        <td><code class="small text-secondary">${escapeHtml(c.raw_type)}</code></td>
+                        <td>${formatNumber(c.null_count)} (${c.null_percentage}%)</td>
                         <td>${formatNumber(c.unique_count)}</td>
-                        <td><small class="text-secondary text-truncate d-inline-block" style="max-width: 250px;">${sampleStr}</small></td>
+                        <td><span class="table-col-samples text-secondary small" title="${sampleStr}">${sampleStr}</span></td>
                     </tr>
                 `;
             }).join("");
         }
 
-        // Preview Table
+        // Tabular Preview Table
         const thead = document.getElementById("previewThead");
         const tbody = document.getElementById("previewTbody");
 
         if (thead && data.preview && data.preview.columns) {
-            thead.innerHTML = `<tr>${data.preview.columns.map(col => `<th>${col}</th>`).join("")}</tr>`;
+            thead.innerHTML = `<tr>${data.preview.columns.map(col => `<th title="${escapeHtml(col)}">${escapeHtml(col)}</th>`).join("")}</tr>`;
         }
 
         if (tbody && data.preview && data.preview.rows) {
             tbody.innerHTML = data.preview.rows.map(row => {
                 const cells = data.preview.columns.map(col => {
                     const val = row[col];
-                    return `<td>${val !== null && val !== undefined ? val : '<span class="text-muted">null</span>'}</td>`;
+                    const hasVal = (val !== null && val !== undefined);
+                    const displayVal = hasVal ? escapeHtml(String(val)) : '<span class="text-muted">null</span>';
+                    const titleVal = hasVal ? escapeHtml(String(val)) : 'null';
+                    return `<td title="${titleVal}">${displayVal}</td>`;
                 }).join("");
                 return `<tr>${cells}</tr>`;
             }).join("");
         }
 
-        // Smooth scroll to preview
-        previewContainer.scrollIntoView({ behavior: "smooth" });
+        // Smooth scroll to preview container
+        previewContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     // Run Analysis Button Handler
@@ -160,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 analyzeBtn.disabled = true;
-                analyzeBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Orchestrating 7 Agents...`;
+                analyzeBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Orchestrating 7 Agents...`;
                 showToast("Executing multi-agent analytics pipeline...", "info");
 
                 const result = await API.runAnalysis(dId);
@@ -178,4 +195,3 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-

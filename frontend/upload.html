@@ -18,9 +18,12 @@
 </head>
 <body>
 
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
     <div class="app-container">
         <!-- Sidebar Navigation -->
-        <aside class="app-sidebar">
+        <aside class="app-sidebar" id="appSidebar">
             <div class="sidebar-header">
                 <div class="brand-icon">
                     <i class="bi bi-cpu-fill"></i>
@@ -69,18 +72,18 @@
         <main class="app-main">
             <!-- Header Bar -->
             <header class="app-header">
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-secondary btn-sm mobile-menu-toggle d-none" type="button">
+                <div class="d-flex align-items-center gap-3 min-w-0">
+                    <button class="mobile-menu-toggle" type="button" aria-label="Toggle navigation menu">
                         <i class="bi bi-list fs-5"></i>
                     </button>
                     <div class="page-title-box">
-                        <h1 class="page-title mb-0">Dataset Ingestion & Validation</h1>
+                        <h1 class="page-title mb-0">Dataset Ingestion &amp; Validation</h1>
                         <span class="page-breadcrumb">Upload CSV or Excel spreadsheets for multi-agent profiling</span>
                     </div>
                 </div>
 
                 <div class="header-actions">
-                    <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">
+                    <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Theme">
                         <i class="bi bi-moon-stars-fill"></i>
                     </button>
                     <a href="dashboard.html" class="btn-outline-custom">
@@ -95,9 +98,9 @@
                 <div class="card-custom p-4 mb-4">
                     <div id="dropzone" class="upload-dropzone">
                         <i class="bi bi-cloud-arrow-up dropzone-icon d-block"></i>
-                        <h4 class="fw-bold mb-2">Drag and drop your dataset here</h4>
+                        <h4 class="fw-bold mb-1">Drag and drop your dataset here</h4>
                         <p class="text-secondary small mb-3">
-                            Supported formats: <strong>CSV, Excel (.xlsx, .xls)</strong> | Max file size: <strong>25 MB</strong>
+                            Supported formats: <strong>CSV, Excel (.xlsx, .xls)</strong> | Max size: <strong>25 MB</strong>
                         </p>
                         <div class="d-flex justify-content-center gap-3">
                             <label for="fileInput" class="btn-primary-custom mb-0" style="cursor: pointer;">
@@ -111,7 +114,7 @@
                 <!-- Upload Progress Indicator -->
                 <div id="uploadProgressBox" class="card-custom p-3 mb-4 d-none">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="fw-semibold small" id="uploadFilename">Uploading file...</span>
+                        <span class="fw-semibold small text-truncate me-2" id="uploadFilename">Uploading file...</span>
                         <span class="badge-custom badge-primary" id="uploadPercent">Processing</span>
                     </div>
                     <div class="progress" style="height: 6px;">
@@ -123,20 +126,20 @@
                 <div id="previewContainer" class="d-none">
                     <!-- Metadata Header Card -->
                     <div class="card-custom p-4 mb-4">
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div>
+                        <div class="dataset-meta-wrapper">
+                            <div class="dataset-meta-info">
                                 <span class="badge-custom badge-success mb-2">
-                                    <i class="bi bi-check-circle-fill"></i> Dataset Validated & Ingested
+                                    <i class="bi bi-check-circle-fill"></i> Dataset Validated &amp; Ingested
                                 </span>
-                                <h3 id="metaFilename" class="fw-bold mb-1">dataset.csv</h3>
-                                <div class="text-secondary small d-flex gap-3 flex-wrap">
-                                    <span><i class="bi bi-table"></i> <strong id="metaRows">0</strong> Rows</span>
-                                    <span><i class="bi bi-columns-gap"></i> <strong id="metaCols">0</strong> Columns</span>
-                                    <span><i class="bi bi-hdd"></i> <strong id="metaSize">0 KB</strong></span>
+                                <h3 id="metaFilename" class="dataset-meta-filename">dataset.csv</h3>
+                                <div class="dataset-meta-metrics">
+                                    <span class="meta-metric-tag"><i class="bi bi-table text-primary"></i> <strong id="metaRows">0</strong> Rows</span>
+                                    <span class="meta-metric-tag"><i class="bi bi-columns-gap text-primary"></i> <strong id="metaCols">0</strong> Columns</span>
+                                    <span class="meta-metric-tag"><i class="bi bi-hdd text-primary"></i> <strong id="metaSize">0 KB</strong></span>
                                 </div>
                             </div>
-                            <div>
-                                <button id="analyzeNowBtn" class="btn-primary-custom" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
+                            <div class="dataset-meta-action">
+                                <button id="analyzeNowBtn" class="btn-primary-custom btn-analyze-action">
                                     <i class="bi bi-play-circle-fill"></i> Run Multi-Agent Analysis
                                 </button>
                             </div>
@@ -147,7 +150,10 @@
                     <div class="card-custom mb-4">
                         <div class="card-header-custom">
                             <span class="card-title-custom">
-                                <i class="bi bi-search text-primary"></i> Column Structure & Type Classification
+                                <i class="bi bi-search text-primary"></i> Column Structure &amp; Type Classification
+                            </span>
+                            <span class="text-secondary small d-none d-sm-inline">
+                                Complete Schema Inventory
                             </span>
                         </div>
                         <div class="card-body-custom p-0">
@@ -155,12 +161,12 @@
                                 <table class="table-custom">
                                     <thead>
                                         <tr>
-                                            <th>Column Header</th>
-                                            <th>Inferred Type</th>
-                                            <th>Data Type</th>
-                                            <th>Missing Values</th>
-                                            <th>Distinct Values</th>
-                                            <th>Sample Values</th>
+                                            <th style="min-width: 180px;">Column Header</th>
+                                            <th style="min-width: 130px;">Inferred Type</th>
+                                            <th style="min-width: 120px;">Data Type</th>
+                                            <th style="min-width: 130px;">Missing Values</th>
+                                            <th style="min-width: 120px;">Distinct Values</th>
+                                            <th style="min-width: 220px;">Sample Values</th>
                                         </tr>
                                     </thead>
                                     <tbody id="columnMetaBody">
@@ -172,14 +178,17 @@
                     </div>
 
                     <!-- 10-Row Sample Preview -->
-                    <div class="card-custom">
+                    <div class="card-custom mb-4">
                         <div class="card-header-custom">
                             <span class="card-title-custom">
                                 <i class="bi bi-eye text-primary"></i> Sample Tabular Preview (First 10 Records)
                             </span>
+                            <span class="badge-custom badge-primary small">
+                                <i class="bi bi-arrows-expand"></i> Horizontal Scroll Enabled
+                            </span>
                         </div>
                         <div class="card-body-custom p-0">
-                            <div class="table-responsive">
+                            <div class="preview-table-container">
                                 <table id="previewTable" class="table-custom">
                                     <thead id="previewThead">
                                         <!-- Header row injected -->
@@ -204,4 +213,3 @@
     <script src="js/upload.js"></script>
 </body>
 </html>
-

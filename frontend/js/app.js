@@ -91,9 +91,9 @@ function showToast(message, type = "info") {
     if (type === "danger") icon = "bi-x-circle-fill text-danger";
 
     toast.innerHTML = `
-        <i class="bi ${icon} fs-5"></i>
+        <i class="bi ${icon} fs-5 flex-shrink-0"></i>
         <div class="flex-grow-1 small">${message}</div>
-        <button type="button" class="btn-close btn-close-sm" style="font-size: 0.7rem;"></button>
+        <button type="button" class="btn-close btn-close-sm flex-shrink-0" style="font-size: 0.7rem;" aria-label="Close"></button>
     `;
 
     toast.querySelector(".btn-close").addEventListener("click", () => toast.remove());
@@ -121,13 +121,37 @@ function formatPct(val) {
     return `${Number(val).toFixed(2)}%`;
 }
 
-// Mobile sidebar toggle
+// Mobile sidebar toggle with backdrop overlay
 function initMobileSidebar() {
     const toggle = document.querySelector(".mobile-menu-toggle");
     const sidebar = document.querySelector(".app-sidebar");
+    let backdrop = document.getElementById("sidebarBackdrop");
+    
+    if (!backdrop) {
+        backdrop = document.createElement("div");
+        backdrop.id = "sidebarBackdrop";
+        backdrop.className = "sidebar-backdrop";
+        document.body.appendChild(backdrop);
+    }
+
     if (toggle && sidebar) {
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("show");
+        toggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = sidebar.classList.toggle("show");
+            backdrop.classList.toggle("show", isOpen);
+        });
+
+        backdrop.addEventListener("click", () => {
+            sidebar.classList.remove("show");
+            backdrop.classList.remove("show");
+        });
+
+        // Close on ESC key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && sidebar.classList.contains("show")) {
+                sidebar.classList.remove("show");
+                backdrop.classList.remove("show");
+            }
         });
     }
 }
@@ -138,4 +162,3 @@ document.addEventListener("DOMContentLoaded", () => {
     AppState.updateSidebarActiveDataset();
     initMobileSidebar();
 });
-

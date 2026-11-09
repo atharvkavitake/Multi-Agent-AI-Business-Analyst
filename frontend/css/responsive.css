@@ -1,66 +1,221 @@
 /* ===================================================================
    RESPONSIVE LAYOUT & MEDIA QUERIES
+   Airtight Multi-Breakpoint System (Desktop, Tablet, Mobile)
    =================================================================== */
 
-@media (max-width: 1200px) {
-    .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
+/* Standard & Large Desktop Screens (> 992px) */
+@media (min-width: 993px) {
+    .app-sidebar {
+        transform: none !important;
+        width: var(--sidebar-width) !important;
+        min-width: var(--sidebar-width) !important;
+        max-width: var(--sidebar-width) !important;
+    }
+
+    .app-main {
+        margin-left: var(--sidebar-width) !important;
+        width: calc(100% - var(--sidebar-width)) !important;
+        max-width: calc(100% - var(--sidebar-width)) !important;
+        min-width: 0 !important;
+    }
+
+    .mobile-menu-toggle {
+        display: none !important;
     }
 }
 
+/* Medium Desktops & Large Tablets (<= 1200px) */
+@media (max-width: 1200px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .app-content {
+        padding: 1.5rem;
+    }
+}
+
+/* Tablet Portrait & Mobile Landscape (<= 992px) */
 @media (max-width: 992px) {
     .app-sidebar {
-        width: 280px;
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+        position: fixed !important;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1050;
+        transform: translateX(-100%);
         box-shadow: var(--shadow-xl);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .app-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .app-main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex !important;
+    }
+
     .app-header {
-        padding: 0 1rem;
+        padding: 0 1.25rem;
     }
+
     .app-content {
         padding: 1.25rem;
     }
+
     .chat-bubble {
         max-width: 92%;
     }
+
+    .dataset-meta-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .dataset-meta-action {
+        width: 100%;
+    }
+
+    .btn-analyze-action {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
+/* Mobile Devices & Small Tablets (<= 768px) */
 @media (max-width: 768px) {
     .kpi-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
+
+    .app-header {
+        padding: 0 1rem;
+    }
+
+    .page-title {
+        font-size: 1.05rem;
+    }
+
+    .page-breadcrumb {
+        display: none !important;
+    }
+
+    .app-content {
+        padding: 1rem;
+    }
+
+    .card-header-custom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem 1.25rem;
+    }
+
+    .card-body-custom {
+        padding: 1.25rem;
+    }
+
     .strategy-header {
         flex-direction: column;
         gap: 0.5rem;
     }
-    .card-header-custom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
+
     .nav-tabs-custom {
         gap: 0.25rem;
     }
+
     .tab-btn-custom {
         padding: 0.6rem 0.85rem;
         font-size: 0.82rem;
     }
+
     .chat-input-bar {
         padding: 0.75rem 1rem;
     }
+
+    .upload-dropzone {
+        padding: 1.75rem 1rem;
+        min-height: 190px;
+        max-height: 240px;
+    }
+
+    .dropzone-icon {
+        font-size: 2.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .preview-table-container {
+        max-height: 400px;
+    }
 }
 
+/* Compact Mobile Screens (<= 480px) */
 @media (max-width: 480px) {
-    .page-title {
-        font-size: 1rem;
+    .app-header {
+        padding: 0 0.75rem;
     }
+
+    .page-title {
+        font-size: 0.95rem;
+    }
+
     .brand-title {
         font-size: 0.95rem;
     }
-    .upload-dropzone {
-        padding: 2rem 1rem;
+
+    .app-content {
+        padding: 0.75rem;
     }
+
+    .card-custom {
+        border-radius: var(--border-radius-md);
+        margin-bottom: 1rem;
+    }
+
+    .card-header-custom,
+    .card-body-custom {
+        padding: 0.9rem;
+    }
+
+    .upload-dropzone {
+        padding: 1.25rem 0.75rem;
+        min-height: 175px;
+        max-height: 220px;
+    }
+
     .dropzone-icon {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
+    }
+
+    .upload-dropzone h4 {
+        font-size: 1.05rem;
+    }
+
+    .dataset-meta-filename {
+        font-size: 1.15rem;
+    }
+
+    .dataset-meta-metrics {
+        gap: 0.5rem;
+    }
+
+    .meta-metric-tag {
+        font-size: 0.78rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .preview-table-container {
+        max-height: 350px;
     }
 }
-
