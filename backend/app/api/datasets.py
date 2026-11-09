@@ -14,8 +14,10 @@ from backend.app.schemas.dataset import (
     DatasetUploadResponse,
 )
 from backend.app.schemas.analysis import DeterministicAnalysisPayload
+from backend.app.schemas.visualization import DatasetVisualizationsResponse
 from backend.app.services.data_service import DataService
 from backend.app.services.analysis_service import AnalyticsService
+from backend.app.services.visualization_service import VisualizationService
 from backend.app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -91,6 +93,26 @@ async def get_dataset_profile(dataset_id: str):
         dataset_name=dataset_meta.filename,
     )
     return payload
+
+
+@router.get(
+    "/{dataset_id}/visualizations",
+    response_model=DatasetVisualizationsResponse,
+    summary="Get dynamic business chart specifications",
+    description="Generates verified Plotly.js and Chart.js visualization specifications.",
+)
+async def get_dataset_visualizations(dataset_id: str):
+    """
+    Generate dynamic business chart configurations for an uploaded dataset.
+    """
+    dataset_meta = DataService.get_dataset(dataset_id)
+    df = DataService.get_dataset_dataframe(dataset_id)
+    response = VisualizationService.generate_dataset_visualizations(
+        df=df,
+        dataset_id=dataset_id,
+        dataset_name=dataset_meta.filename,
+    )
+    return response
 
 
 @router.delete(

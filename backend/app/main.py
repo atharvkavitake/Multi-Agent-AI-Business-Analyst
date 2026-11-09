@@ -16,6 +16,7 @@ from backend.app.utils.logging_config import setup_logging, get_logger
 from backend.app.api.datasets import router as datasets_router
 from backend.app.api.analysis import router as analysis_router
 from backend.app.api.chat import router as chat_router
+from backend.app.api.reports import router as reports_router
 
 settings = get_settings()
 setup_logging("DEBUG" if settings.DEBUG else "INFO")
@@ -85,6 +86,7 @@ app.add_middleware(
 app.include_router(datasets_router, prefix=settings.API_V1_PREFIX)
 app.include_router(analysis_router, prefix=settings.API_V1_PREFIX)
 app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
+app.include_router(reports_router, prefix=settings.API_V1_PREFIX)
 
 
 # Global Exception Handlers
