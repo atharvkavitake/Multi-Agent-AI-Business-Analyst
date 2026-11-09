@@ -161,4 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     AppState.updateSidebarActiveDataset();
     initMobileSidebar();
+    if (window.Auth) {
+        Auth.renderSidebarUserProfile();
+    }
 });

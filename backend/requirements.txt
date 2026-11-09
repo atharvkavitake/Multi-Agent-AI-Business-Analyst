@@ -18,6 +18,7 @@ reportlab>=4.1.0,<5.0.0
 # Database & ORM
 sqlalchemy>=2.0.28,<3.0.0
 psycopg2-binary>=2.9.9
+alembic>=1.13.0
 
 # Security, Authentication & Environment
 python-jose[cryptography]>=3.3.0

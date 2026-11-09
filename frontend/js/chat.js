@@ -5,6 +5,7 @@
 let chatCharts = {};
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     const chatForm = document.getElementById("chatForm");
     const chatInput = document.getElementById("chatInput");
     const chatMessages = document.getElementById("chatMessages");

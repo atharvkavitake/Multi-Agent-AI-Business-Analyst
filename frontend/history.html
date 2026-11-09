@@ -53,15 +53,19 @@
                 <a href="history.html" class="nav-link-custom active">
                     <i class="bi bi-clock-history"></i> Analysis History
                 </a>
+                <a href="profile.html" class="nav-link-custom">
+                    <i class="bi bi-person-circle"></i> Profile
+                </a>
                 <a href="settings.html" class="nav-link-custom">
                     <i class="bi bi-gear-fill"></i> Settings
                 </a>
             </div>
 
             <div class="sidebar-footer">
-                <div id="activeDatasetIndicator" class="active-dataset-pill">
+                <div id="activeDatasetIndicator" class="active-dataset-pill mb-2">
                     <i class="bi bi-circle text-muted"></i> <span>No dataset</span>
                 </div>
+                <div id="sidebarUserProfile" class="sidebar-user-profile"></div>
             </div>
         </aside>
 
@@ -74,8 +78,8 @@
                         <i class="bi bi-list fs-5"></i>
                     </button>
                     <div class="page-title-box">
-                        <h1 class="page-title mb-0">Analysis Run History</h1>
-                        <span class="page-breadcrumb">Review, re-inspect, and manage previous multi-agent runs</span>
+                        <h1 class="page-title mb-0">Personalized Analysis History</h1>
+                        <span class="page-breadcrumb">Search, review, re-inspect, and manage your isolated multi-agent runs</span>
                     </div>
                 </div>
 
@@ -83,44 +87,121 @@
                     <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">
                         <i class="bi bi-moon-stars-fill"></i>
                     </button>
-                    <button id="refreshHistoryBtn" class="btn-outline-custom">
-                        <i class="bi bi-arrow-clockwise"></i> Refresh
-                    </button>
+                    <a href="upload.html" class="btn btn-primary-custom">
+                        <i class="bi bi-plus-lg me-1"></i> New Analysis
+                    </a>
                 </div>
             </header>
 
             <!-- History Content -->
             <div class="app-content">
+                <!-- Filter Bar Card -->
+                <div class="card card-custom p-3 mb-4">
+                    <div class="row g-2 align-items-center">
+                        <!-- Search Input -->
+                        <div class="col-12 col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0 text-muted">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" id="historySearchInput" class="form-control form-control-custom border-start-0" placeholder="Search dataset name...">
+                            </div>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="col-6 col-md-2">
+                            <select id="historyStatusFilter" class="form-select form-select-custom">
+                                <option value="all">All Statuses</option>
+                                <option value="completed">Completed</option>
+                                <option value="degraded">Degraded</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+
+                        <!-- Sort Order -->
+                        <div class="col-6 col-md-2">
+                            <select id="historySortSelect" class="form-select form-select-custom">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                            </select>
+                        </div>
+
+                        <!-- Date Range Filters -->
+                        <div class="col-6 col-md-2">
+                            <input type="date" id="historyDateFrom" class="form-control form-control-custom" title="Filter from date">
+                        </div>
+
+                        <!-- Reset / Apply Action -->
+                        <div class="col-6 col-md-2 d-flex gap-2">
+                            <button id="applyFiltersBtn" class="btn btn-primary-custom flex-grow-1">
+                                <i class="bi bi-funnel-fill"></i> Filter
+                            </button>
+                            <button id="resetFiltersBtn" class="btn btn-outline-custom" title="Reset Filters">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table Card -->
                 <div class="card-custom">
-                    <div class="card-header-custom">
+                    <div class="card-header-custom d-flex justify-content-between align-items-center">
                         <span class="card-title-custom">
-                            <i class="bi bi-journal-text text-primary"></i> Historical Multi-Agent Sessions
+                            <i class="bi bi-journal-text text-primary"></i> Saved Analysis Runs
                         </span>
                         <span class="badge-custom badge-primary" id="historyCount">0 Sessions</span>
                     </div>
+
                     <div class="card-body-custom p-0">
                         <div class="table-responsive">
-                            <table class="table-custom">
+                            <table class="table-custom mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Dataset Name</th>
-                                        <th>Analysis UUID</th>
+                                        <th>Dataset & Details</th>
+                                        <th>Date & Time</th>
+                                        <th>Shape</th>
                                         <th>Status</th>
-                                        <th>Gross Revenue</th>
+                                        <th>Revenue</th>
                                         <th>Net Profit</th>
                                         <th>Margin</th>
-                                        <th>Execution Time</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="historyTableBody">
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted py-4">
-                                            Loading analysis history...
+                                        <td colspan="8" class="text-center text-muted py-5">
+                                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                            Loading personal analysis history...
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Empty State View -->
+                        <div id="historyEmptyState" class="text-center py-5 d-none">
+                            <div class="mb-3 text-secondary" style="font-size: 3rem;">
+                                <i class="bi bi-clipboard2-data"></i>
+                            </div>
+                            <h5 class="fw-bold mb-1">No Analysis History Found</h5>
+                            <p class="text-secondary small mb-3">You haven't run any business intelligence analyses yet, or no runs match your filters.</p>
+                            <a href="upload.html" class="btn btn-primary-custom px-4">
+                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload Dataset & Analyze
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Pagination Footer -->
+                    <div class="card-footer bg-transparent border-top p-3 d-flex justify-content-between align-items-center" id="historyPaginationFooter">
+                        <span class="small text-secondary" id="paginationSummary">Showing 0 of 0 sessions</span>
+                        <div class="d-flex gap-2">
+                            <button id="prevPageBtn" class="btn btn-sm btn-outline-custom" disabled>
+                                <i class="bi bi-chevron-left me-1"></i> Previous
+                            </button>
+                            <span class="btn btn-sm btn-outline-secondary disabled" id="pageIndicator">Page 1 of 1</span>
+                            <button id="nextPageBtn" class="btn btn-sm btn-outline-custom" disabled>
+                                Next <i class="bi bi-chevron-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -131,8 +212,8 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="js/history.js"></script>
 </body>
 </html>
-

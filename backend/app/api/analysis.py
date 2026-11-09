@@ -5,14 +5,19 @@ Handles initiating multi-agent analysis runs, status polling,
 retrieving consolidated results, extracting executive insights, and managing history.
 """
 
-from typing import Any, Dict, List
-from fastapi import APIRouter, HTTPException, status
+from typing import Any, Dict, List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
+from backend.app.api.deps import get_optional_current_user
+from backend.app.database import get_db
+from backend.app.models.user import User
 from backend.app.orchestration.orchestrator import AgentOrchestrator
 from backend.app.orchestration.workflow import (
     AnalysisStatusResponse,
     MultiAgentAnalysisState,
 )
+from backend.app.services.history_service import HistoryService
 from backend.app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -31,12 +36,17 @@ orchestrator = AgentOrchestrator()
         "Trend Analyst, Anomaly Detector, Business Strategist, and Report Generator)."
     ),
 )
-async def run_analysis(dataset_id: str):
+async def run_analysis(
+    dataset_id: str,
+    user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
+):
     """
     Trigger the central multi-agent workflow.
     """
-    logger.info(f"API request to run analysis on dataset: {dataset_id}")
-    state = orchestrator.run_pipeline(dataset_id)
+    user_id = user.id if user else None
+    logger.info(f"API request to run analysis on dataset: {dataset_id} for user: {user_id}")
+    state = orchestrator.run_pipeline(dataset_id, user_id=user_id, db=db)
     return state
 
 
@@ -57,12 +67,18 @@ async def get_analysis_status(analysis_id: str):
     "/history",
     response_model=List[Dict[str, Any]],
     summary="List analysis history",
-    description="Returns summaries of all previously executed analyses.",
+    description="Returns summaries of all previously executed analyses for current user.",
 )
-async def list_analysis_history():
+async def list_analysis_history(
+    user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
+):
     """
     Retrieve history of completed analyses.
     """
+    if user:
+        resp = HistoryService.list_user_history(db, user_id=user.id, page_size=100)
+        return [item.model_dump() for item in resp.items]
     return AgentOrchestrator.list_all_analyses()
 
 
@@ -123,10 +139,21 @@ async def get_analysis_insights(analysis_id: str):
     summary="Delete an analysis session",
     description="Removes the analysis record from cache and memory.",
 )
-async def delete_analysis(analysis_id: str):
+async def delete_analysis(
+    analysis_id: str,
+    user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
+):
     """
     Delete an analysis session.
     """
-    AgentOrchestrator.delete_analysis(analysis_id)
+    if user:
+        try:
+            HistoryService.delete_user_analysis(db, user_id=user.id, analysis_id=analysis_id)
+        except Exception:
+            pass
+    try:
+        AgentOrchestrator.delete_analysis(analysis_id)
+    except Exception:
+        pass
     return {"success": True, "message": f"Analysis {analysis_id} deleted."}
-

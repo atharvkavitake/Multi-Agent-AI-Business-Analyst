@@ -266,6 +266,7 @@ function renderOutliersTable(outliers) {
 
 // Wire up "Run Analysis" button
 document.addEventListener("DOMContentLoaded", () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     initDashboard();
 
     const runBtn = document.getElementById("runAnalysisBtn");

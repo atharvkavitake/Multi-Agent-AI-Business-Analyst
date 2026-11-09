@@ -5,6 +5,7 @@ Multi-Agent AI Business Analyst - FastAPI Main Application Entry Point.
 from contextlib import asynccontextmanager
 from datetime import datetime
 from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -19,6 +20,8 @@ from backend.app.api.analysis import router as analysis_router
 from backend.app.api.chat import router as chat_router
 from backend.app.api.reports import router as reports_router
 from backend.app.api.auth import router as auth_router
+from backend.app.api.history import router as history_router
+from backend.app.api.users import router as users_router
 
 settings = get_settings()
 setup_logging("DEBUG" if settings.DEBUG else "INFO")
@@ -86,8 +89,10 @@ app.add_middleware(
 
 # Include API Routers
 app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
+app.include_router(users_router, prefix=settings.API_V1_PREFIX)
 app.include_router(datasets_router, prefix=settings.API_V1_PREFIX)
 app.include_router(analysis_router, prefix=settings.API_V1_PREFIX)
+app.include_router(history_router, prefix=settings.API_V1_PREFIX)
 app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
 app.include_router(reports_router, prefix=settings.API_V1_PREFIX)
 
@@ -103,7 +108,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             "success": False,
             "error_type": "ValidationError",
             "message": "Input validation failed. Please check the submitted fields.",
-            "details": exc.errors(),
+            "details": jsonable_encoder(exc.errors()),
         },
     )
 

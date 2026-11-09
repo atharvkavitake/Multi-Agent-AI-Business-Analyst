@@ -5,8 +5,13 @@ Handles dataset uploading (CSV / Excel), column inspection,
 tabular preview retrieval, listing, and deletion.
 """
 
-from typing import List
-from fastapi import APIRouter, File, HTTPException, UploadFile, status
+from typing import List, Optional
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy.orm import Session
+
+from backend.app.api.deps import get_optional_current_user
+from backend.app.database import get_db
+from backend.app.models.user import User
 
 from backend.app.schemas.dataset import (
     DatasetDeleteResponse,
@@ -37,12 +42,15 @@ router = APIRouter(prefix="/datasets", tags=["Datasets"])
 )
 async def upload_dataset(
     file: UploadFile = File(..., description="CSV or Excel (.xlsx, .xls) data file"),
+    user: Optional[User] = Depends(get_optional_current_user),
+    db: Session = Depends(get_db),
 ):
     """
     Handle dataset file upload, security validation, and preview extraction.
     """
-    logger.info(f"Received dataset upload request: filename='{file.filename}'")
-    response = await DataService.process_upload(file)
+    user_id = user.id if user else None
+    logger.info(f"Received dataset upload request: filename='{file.filename}' (User: {user_id})")
+    response = await DataService.process_upload(file, user_id=user_id, db=db)
     return response
 
 

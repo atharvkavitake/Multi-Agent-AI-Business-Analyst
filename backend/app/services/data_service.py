@@ -222,7 +222,9 @@ class DataService:
     """Service class managing dataset uploads, retrieval, and inspection."""
 
     @staticmethod
-    async def process_upload(upload_file, user_id: Optional[str] = None) -> DatasetUploadResponse:
+    async def process_upload(
+        upload_file, user_id: Optional[str] = None, db: Optional[Any] = None
+    ) -> DatasetUploadResponse:
         """
         Stream, validate, save, and profile an uploaded dataset file.
         """
@@ -266,6 +268,26 @@ class DataService:
             "uploaded_at": upload_time,
             "user_id": user_id,
         }
+
+        # Persist to database if db session provided
+        if db:
+            try:
+                from backend.app.models.dataset import Dataset
+                ds_record = Dataset(
+                    id=dataset_id,
+                    user_id=user_id,
+                    dataset_name=clean_name,
+                    file_type=clean_name.rsplit(".", 1)[-1].lower() if "." in clean_name else "csv",
+                    file_size=size_bytes,
+                    row_count=len(df),
+                    column_count=len(df.columns),
+                    storage_path=str(target_path),
+                    uploaded_at=datetime.utcnow(),
+                )
+                db.merge(ds_record)
+                db.commit()
+            except Exception as e:
+                logger.error(f"Failed to persist dataset metadata to database: {e}")
 
         logger.info(
             f"Dataset '{clean_name}' successfully processed: ID={dataset_id}, "

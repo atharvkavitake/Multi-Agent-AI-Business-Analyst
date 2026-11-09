@@ -3,6 +3,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     const dropzone = document.getElementById("dropzone");
     const fileInput = document.getElementById("fileInput");
     const progressBox = document.getElementById("uploadProgressBox");

@@ -50,7 +50,9 @@ class AgentOrchestrator:
         self.strategy_agent = BusinessStrategyAgent()
         self.report_agent = BusinessReportAgent()
 
-    def run_pipeline(self, dataset_id: str) -> MultiAgentAnalysisState:
+    def run_pipeline(
+        self, dataset_id: str, user_id: Optional[str] = None, db: Optional[Any] = None
+    ) -> MultiAgentAnalysisState:
         """
         Execute full end-to-end multi-agent analysis on a dataset.
         """
@@ -219,6 +221,15 @@ class AgentOrchestrator:
         logger.info(
             f"=== [ORCHESTRATOR] Pipeline Completed: status={state.status} in {total_duration}s ==="
         )
+
+        # Persist to database if db session provided
+        if db:
+            try:
+                from backend.app.services.history_service import HistoryService
+                HistoryService.persist_analysis(db, state, user_id)
+            except Exception as e:
+                logger.error(f"[ORCHESTRATOR] Failed to persist analysis to database: {e}")
+
         return state
 
     @staticmethod

@@ -3,6 +3,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     const apiUrlInput = document.getElementById("apiUrlInput");
     const saveBtn = document.getElementById("saveApiUrlBtn");
 

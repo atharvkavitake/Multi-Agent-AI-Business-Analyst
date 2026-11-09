@@ -3,6 +3,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", async () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     const analysisId = AppState.currentAnalysisId;
     const downloadBtn = document.getElementById("downloadPdfBtn");
 

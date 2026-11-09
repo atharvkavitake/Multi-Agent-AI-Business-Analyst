@@ -75,15 +75,92 @@ Instant guest session generation for recruiters and demo evaluations. No registr
     "expires_in_minutes": 1440,
     "user": {
       "id": "guest_3a8b7c",
-      "email": "guest_3a8b7c@demo.antigravity.ai",
-      "full_name": "Guest Analyst"
+      "email": "guest_3a8b7c@demo.bi-platform.local",
+      "full_name": "guest_3a8b7c",
+      "is_guest": true
     }
   }
   ```
 
 ---
 
-## 2. Dataset Management Endpoints (`/api/datasets`)
+### `POST /api/auth/forgot-password`
+Initiates password recovery by generating a cryptographically secure, single-use token (30-minute expiry).
+- **Request Body:**
+  ```json
+  {
+    "email": "analyst@enterprise.com"
+  }
+  ```
+- **Response (`200 OK`):**
+  ```json
+  {
+    "success": true,
+    "message": "If your email address is registered, password recovery instructions have been sent."
+  }
+  ```
+
+---
+
+### `POST /api/auth/reset-password`
+Validates recovery token and securely updates user password.
+- **Request Body:**
+  ```json
+  {
+    "token": "d7a4f9e...",
+    "new_password": "NewStrongPassword456!",
+    "confirm_password": "NewStrongPassword456!"
+  }
+  ```
+- **Response (`200 OK`):**
+  ```json
+  {
+    "success": true,
+    "message": "Password reset successfully. You can now log in with your new credentials."
+  }
+  ```
+
+---
+
+## 2. User Profile & Account Security (`/api/users`)
+
+All endpoints in this section require `Authorization: Bearer <token>`.
+
+### `GET /api/users/me`
+Retrieve profile of currently authenticated user.
+- **Response (`200 OK`):** User profile details including `id`, `full_name`, `email`, `is_active`, `is_guest`, `created_at`, `last_login`.
+
+---
+
+### `PUT /api/users/me`
+Update user profile metadata (e.g. `full_name`).
+- **Request Body:** `{"full_name": "Senior Lead Analyst"}`
+- **Response (`200 OK`):** Updated user object.
+
+---
+
+### `PUT /api/users/change-password`
+Update user password after validating current password.
+- **Request Body:**
+  ```json
+  {
+    "current_password": "OldPassword123!",
+    "new_password": "NewPassword456!",
+    "confirm_password": "NewPassword456!"
+  }
+  ```
+- **Response (`200 OK`):** `{"success": true, "message": "Password updated successfully."}`
+
+---
+
+### `DELETE /api/users/me`
+Permanently delete user account and cascade delete all associated datasets, analysis runs, and generated reports.
+- **Request Body:** `{"password": "CurrentPassword123!"}`
+- **Response (`200 OK`):** `{"success": true, "message": "Account and all associated records permanently deleted."}`
+
+---
+
+## 3. Dataset Management Endpoints (`/api/datasets`)
 
 ### `POST /api/datasets/upload`
 Upload a CSV or Excel dataset with real-time MIME-type validation, size bounds checks, and automatic schema profiling.
@@ -274,3 +351,63 @@ Compiles an enterprise-grade multi-page PDF executive brief via ReportLab.
 ### `GET /api/reports/{report_id}/download`
 Download the compiled PDF report directly with appropriate content disposition headers.
 - **Response (`200 OK`):** Binary stream (`application/pdf`).
+
+---
+
+## 7. Personalized Analysis History (`/api/history`)
+
+All endpoints in this section require `Authorization: Bearer <token>`.
+Strict multi-tenant data isolation is enforced: users can only view, query, and delete their own analysis records.
+
+### `GET /api/history`
+Retrieve paginated, filtered analysis sessions belonging exclusively to the authenticated user.
+- **Query Parameters:**
+  - `search` *(optional)*: Filter by dataset name or title substring.
+  - `status` *(optional)*: `completed`, `degraded`, `failed`, or `all`.
+  - `date_from` *(optional)*: Filter sessions created on or after date (YYYY-MM-DD).
+  - `date_to` *(optional)*: Filter sessions created on or before date (YYYY-MM-DD).
+  - `sort` *(optional)*: `newest` (default) or `oldest`.
+  - `page` *(optional)*: Page number (default: 1).
+  - `page_size` *(optional)*: Records per page (default: 10, max: 100).
+- **Response (`200 OK`):**
+  ```json
+  {
+    "items": [
+      {
+        "id": "anl_82e4a1b0",
+        "analysis_id": "anl_82e4a1b0",
+        "dataset_id": "ds_4d78a9c2",
+        "analysis_title": "Multi-Agent BI Analysis - sample_sales.csv",
+        "dataset_name": "sample_sales.csv",
+        "dataset_size": 4820,
+        "row_count": 5012,
+        "column_count": 41,
+        "status": "completed",
+        "summary": "Full analysis completed across 7 specialized agents.",
+        "created_at": "2026-11-09T14:30:00",
+        "execution_time_seconds": 1.24,
+        "total_revenue": 2297200.86,
+        "total_profit": 286397.02,
+        "profit_margin_pct": 12.47
+      }
+    ],
+    "total_count": 1,
+    "page": 1,
+    "page_size": 10,
+    "total_pages": 1
+  }
+  ```
+
+---
+
+### `GET /api/history/{analysis_id}`
+Retrieve complete detail view for an analysis session including synthesized executive insights, strategic recommendations, and visualization payloads.
+- **Ownership Verification:** Returns `403 Forbidden` if the requested session belongs to another user.
+- **Response (`200 OK`):** Comprehensive analysis detail object.
+
+---
+
+### `DELETE /api/history/{analysis_id}`
+Permanently delete an individual historical analysis record.
+- **Ownership Verification:** Returns `403 Forbidden` if the record belongs to another user.
+- **Response (`200 OK`):** `{"success": true, "message": "Analysis successfully deleted."}`

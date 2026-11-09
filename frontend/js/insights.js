@@ -3,6 +3,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", async () => {
+    if (window.Auth && !Auth.requireAuth()) return;
     initTabs();
 
     let analysisId = AppState.currentAnalysisId;

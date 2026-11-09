@@ -9,7 +9,7 @@
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3.svg?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![Plotly](https://img.shields.io/badge/Plotly-5.20-3F4F75.svg?logo=plotly&logoColor=white)](https://plotly.com/)
 [![ReportLab](https://img.shields.io/badge/ReportLab-4.1-FF6F00.svg)](https://www.reportlab.com/)
-[![Tests](https://img.shields.io/badge/Pytest-36%20Passed%20(100%25)-success.svg?logo=pytest&logoColor=white)](https://pytest.org/)
+[![Tests](https://img.shields.io/badge/Pytest-45%20Passed%20(100%25)-success.svg?logo=pytest&logoColor=white)](https://pytest.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Deployment](https://img.shields.io/badge/Render-Free%20Tier%20Ready-46E3B7.svg?logo=render&logoColor=white)](render.yaml)
 
@@ -265,7 +265,7 @@ pytest -v
 │   │   ├── database.py                 # Dual SQLite / Supabase PostgreSQL Engine
 │   │   └── main.py                     # ASGI Application Root & Lifespan Hooks
 │   ├── requirements.txt                # Production Python Dependencies
-│   └── tests/                          # 8 Automated Test Suites (36 Pytest Tests)
+│   └── tests/                          # 9 Automated Test Suites (45 Pytest Tests, 100% Passing)
 ├── data/
 │   ├── sample_sales.csv                # Benchmark Sales Dataset (60 rows, $76.3k sales)
 │   ├── uploads/                        # Runtime Upload Storage
@@ -278,12 +278,17 @@ pytest -v
 │   ├── css/                            # Bootstrap 5 Customization, Dark/Light Themes
 │   ├── js/                             # Modular Frontend Controllers & API Client
 │   ├── index.html                      # Landing Page & Feature Overview
+│   ├── signup.html                     # User Registration with Password Policy & Strength Meter
+│   ├── login.html                      # Secure Authentication, Brute-Force Shield & Guest Mode
+│   ├── forgot-password.html            # Cryptographic Password Recovery Request
+│   ├── reset-password.html             # Secure Single-Use Token Password Reset
+│   ├── profile.html                    # User Profile Management & Account Security
 │   ├── dashboard.html                  # Main KPI & Analytics Dashboard
-│   ├── upload.html                     # Drag-and-Drop Dataset Ingestion
+│   ├── upload.html                     # Drag-and-Drop Dataset Ingestion (41+ cols responsive)
 │   ├── insights.html                   # AI Agent Insights & Strategy Explorer
 │   ├── chat.html                       # Natural Language BI Chatbot Interface
 │   ├── reports.html                    # PDF Report Preview & Download Center
-│   ├── history.html                    # Historical Analysis Catalog
+│   ├── history.html                    # Personalized Multi-Tenant Analysis Catalog
 │   └── settings.html                   # Model Selection & Host Configurations
 ├── Dockerfile                          # Multi-Stage Production Container Build
 ├── render.yaml                         # Render Infrastructure-as-Code Blueprint

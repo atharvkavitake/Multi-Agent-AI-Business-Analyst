@@ -156,13 +156,14 @@ class BusinessStrategyAgent(BaseAgent):
             )
             if sorted_by_margin:
                 lowest = sorted_by_margin[0]
+                margin_display = f"{kpis.profit_margin_pct:.1f}%" if kpis.profit_margin_pct is not None else "average"
                 recs.append(
                     StrategicRecommendation(
                         id="REC-03",
                         title=f"Restructure Pricing & Vendor Costs for '{lowest.segment}'",
                         supporting_evidence=(
                             f"'{lowest.segment}' delivered the lowest profit margin at {lowest.profit_margin_pct:.1f}%, "
-                            f"depressing the enterprise blended average of {kpis.profit_margin_pct:.1f}%."
+                            f"depressing the enterprise benchmark of {margin_display}."
                         ),
                         business_impact="Medium",
                         feasibility="Moderate",
@@ -194,8 +195,9 @@ class BusinessStrategyAgent(BaseAgent):
             )
             opps.append("Converting episodic bulk orders into multi-year recurring procurement contracts.")
 
+        overall_margin_str = f"{kpis.profit_margin_pct:.1f}%" if kpis.profit_margin_pct is not None else "baseline"
         focus_summary = (
-            f"The primary strategic mandate is two-fold: protect existing gross margin ({kpis.profit_margin_pct:.1f}%) "
+            f"The primary strategic mandate is two-fold: protect existing gross margin ({overall_margin_str}) "
             f"by enforcing discount caps, while aggressively expanding commercial distribution in leading categories."
         )
 
