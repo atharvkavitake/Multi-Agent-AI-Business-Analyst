@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard | Multi-Agent AI BI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Chart.js & Plotly CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-icon">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <div>
+                    <span class="brand-title d-block">Multi-Agent BI</span>
+                    <span class="brand-subtitle">AI Platform</span>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <span class="menu-label">Main</span>
+                <a href="dashboard.html" class="nav-link-custom active">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a href="upload.html" class="nav-link-custom">
+                    <i class="bi bi-cloud-arrow-up-fill"></i> Upload Dataset
+                </a>
+                <a href="insights.html" class="nav-link-custom">
+                    <i class="bi bi-stars"></i> AI Insights
+                </a>
+                <a href="chat.html" class="nav-link-custom">
+                    <i class="bi bi-chat-dots-fill"></i> Business Chat
+                </a>
+
+                <span class="menu-label mt-3">Reports & History</span>
+                <a href="reports.html" class="nav-link-custom">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> Reports Center
+                </a>
+                <a href="history.html" class="nav-link-custom">
+                    <i class="bi bi-clock-history"></i> Analysis History
+                </a>
+                <a href="settings.html" class="nav-link-custom">
+                    <i class="bi bi-gear-fill"></i> Settings
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div id="activeDatasetIndicator" class="active-dataset-pill">
+                    <i class="bi bi-circle text-muted"></i> <span>No dataset</span>
+                </div>
+                <a href="upload.html" class="btn btn-sm btn-outline-secondary py-0 px-2" title="Change Dataset">
+                    <i class="bi bi-plus-lg"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="app-main">
+            <!-- Header Bar -->
+            <header class="app-header">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-outline-secondary btn-sm mobile-menu-toggle d-none" type="button">
+                        <i class="bi bi-list fs-5"></i>
+                    </button>
+                    <div class="page-title-box">
+                        <h1 class="page-title mb-0">Executive Dashboard</h1>
+                        <span class="page-breadcrumb">Automated Multi-Agent Business Intelligence</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">
+                        <i class="bi bi-moon-stars-fill"></i>
+                    </button>
+                    <a href="upload.html" class="btn-outline-custom">
+                        <i class="bi bi-cloud-arrow-up"></i> Upload
+                    </a>
+                    <button id="runAnalysisBtn" class="btn-primary-custom">
+                        <i class="bi bi-play-circle-fill"></i> Run Analysis
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="app-content">
+                <!-- Welcome / Empty State Alert if no dataset is loaded -->
+                <div id="noDatasetAlert" class="card-custom p-4 text-center mb-4 d-none">
+                    <div class="kpi-icon-wrap kpi-icon-purple mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.8rem;">
+                        <i class="bi bi-file-earmark-arrow-up"></i>
+                    </div>
+                    <h4 class="fw-bold">No Active Dataset Loaded</h4>
+                    <p class="text-secondary mx-auto mb-4" style="max-width: 500px;">
+                        Upload your CSV or Excel dataset, or load the pre-configured sample sales dataset to start autonomous multi-agent analysis.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="upload.html" class="btn-primary-custom">
+                            <i class="bi bi-cloud-arrow-up"></i> Upload Dataset
+                        </a>
+                        <button id="loadSampleDatasetBtn" class="btn-outline-custom">
+                            <i class="bi bi-magic"></i> Load Sample Sales Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Grid -->
+                <div id="kpiSection" class="kpi-grid">
+                    <!-- Revenue -->
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Gross Revenue</div>
+                            <div id="kpiRevenue" class="kpi-value">$0.00</div>
+                            <div id="kpiRevenueSub" class="kpi-subtext neutral">Total commercial sales</div>
+                        </div>
+                        <div class="kpi-icon-wrap kpi-icon-purple">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                    </div>
+                    <!-- Profit -->
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Net Profit</div>
+                            <div id="kpiProfit" class="kpi-value">$0.00</div>
+                            <div id="kpiProfitSub" class="kpi-subtext positive">Net operating earnings</div>
+                        </div>
+                        <div class="kpi-icon-wrap kpi-icon-green">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                    </div>
+                    <!-- Margin -->
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Operating Margin</div>
+                            <div id="kpiMargin" class="kpi-value">0.0%</div>
+                            <div id="kpiMarginSub" class="kpi-subtext neutral">Net margin efficiency</div>
+                        </div>
+                        <div class="kpi-icon-wrap kpi-icon-amber">
+                            <i class="bi bi-pie-chart"></i>
+                        </div>
+                    </div>
+                    <!-- Transactions -->
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Transactions</div>
+                            <div id="kpiTransactions" class="kpi-value">0</div>
+                            <div id="kpiAovSub" class="kpi-subtext neutral">AOV: $0.00</div>
+                        </div>
+                        <div class="kpi-icon-wrap kpi-icon-blue">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1: Macro Trend & Category Distribution -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom">
+                                <span class="card-title-custom">
+                                    <i class="bi bi-graph-up text-primary"></i> Monthly Revenue & Profit Dynamics
+                                </span>
+                                <span class="badge-custom badge-primary" id="trendBadge">Historical Trajectory</span>
+                            </div>
+                            <div class="card-body-custom">
+                                <div id="monthlyTrendChart" class="chart-container-box">
+                                    <canvas id="trendChartCanvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom">
+                                <span class="card-title-custom">
+                                    <i class="bi bi-pie-chart text-primary"></i> Revenue by Category
+                                </span>
+                            </div>
+                            <div class="card-body-custom">
+                                <div id="categoryChartBox" class="chart-container-box">
+                                    <canvas id="categoryChartCanvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 2: Regional Performance & Outlier Flags -->
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom">
+                                <span class="card-title-custom">
+                                    <i class="bi bi-geo-alt text-primary"></i> Geographic Regional Breakdown
+                                </span>
+                            </div>
+                            <div class="card-body-custom">
+                                <div id="regionChartBox" class="chart-container-box">
+                                    <canvas id="regionChartCanvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card-custom h-100">
+                            <div class="card-header-custom">
+                                <span class="card-title-custom">
+                                    <i class="bi bi-shield-exclamation text-danger"></i> Statistical Anomalies & Variances
+                                </span>
+                                <span class="badge-custom badge-danger" id="outlierCountBadge">0 Flagged</span>
+                            </div>
+                            <div class="card-body-custom p-0">
+                                <div class="table-responsive">
+                                    <table class="table-custom">
+                                        <thead>
+                                            <tr>
+                                                <th>Row</th>
+                                                <th>Metric</th>
+                                                <th>Value</th>
+                                                <th>Method</th>
+                                                <th>Severity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="outlierTableBody">
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted py-4">
+                                                    No active dataset analyzed yet.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

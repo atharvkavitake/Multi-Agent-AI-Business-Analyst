@@ -8,12 +8,14 @@ from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
-from backend.app.config import get_settings
+from backend.app.config import get_settings, BASE_DIR
 from backend.app.database import check_database_connection, Base, engine
 from backend.app.utils.logging_config import setup_logging, get_logger
 from backend.app.api.datasets import router as datasets_router
 from backend.app.api.analysis import router as analysis_router
+from backend.app.api.chat import router as chat_router
 
 settings = get_settings()
 setup_logging("DEBUG" if settings.DEBUG else "INFO")
@@ -82,6 +84,7 @@ app.add_middleware(
 # Include API Routers
 app.include_router(datasets_router, prefix=settings.API_V1_PREFIX)
 app.include_router(analysis_router, prefix=settings.API_V1_PREFIX)
+app.include_router(chat_router, prefix=settings.API_V1_PREFIX)
 
 
 # Global Exception Handlers
@@ -130,6 +133,7 @@ async def root():
             "redoc": "/redoc",
             "openapi_json": f"{settings.API_V1_PREFIX}/openapi.json",
         },
+        "frontend_app": "/app/",
         "health_check": "/health",
     }
 
@@ -162,4 +166,11 @@ async def health_check():
             "local_ollama_enabled": settings.USE_LOCAL_OLLAMA,
         },
     }
+
+
+# Mount Frontend Static Web Application
+frontend_dir = BASE_DIR / "frontend"
+if frontend_dir.exists():
+    app.mount("/app", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")
+
 

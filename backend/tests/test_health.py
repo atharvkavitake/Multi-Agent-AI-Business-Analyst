@@ -53,3 +53,11 @@ def test_cors_headers(client):
     )
     assert response.status_code == 200
     assert "access-control-allow-origin" in response.headers
+
+
+def test_frontend_static_serving(client):
+    """Verify that the frontend web application is mounted and served at /app/."""
+    response = client.get("/app/")
+    assert response.status_code == 200
+    assert "Multi-Agent AI Business Analyst" in response.text
+
