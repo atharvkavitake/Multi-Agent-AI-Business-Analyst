@@ -16,3 +16,4 @@ htmlcov/
 data/uploads/*
 data/reports/*
 !data/sample_sales.csv
+
