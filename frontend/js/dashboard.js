@@ -317,3 +317,4 @@ document.addEventListener("DOMContentLoaded", () => {
         if (trendChart) trendChart.update();
     });
 });
+

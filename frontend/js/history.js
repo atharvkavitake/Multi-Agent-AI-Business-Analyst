@@ -94,3 +94,4 @@ window.deleteHistorySession = async function(analysisId) {
         showToast("Failed to delete session: " + error.message, "danger");
     }
 };
+

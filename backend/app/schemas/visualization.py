@@ -38,3 +38,4 @@ class DatasetVisualizationsResponse(BaseModel):
     dataset_id: str
     dataset_name: str
     charts: List[VisualizationSpec] = Field(default_factory=list)
+

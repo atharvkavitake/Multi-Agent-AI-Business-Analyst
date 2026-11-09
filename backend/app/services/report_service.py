@@ -311,3 +311,4 @@ class PDFReportService:
         doc.build(story)
         logger.info(f"PDF report successfully compiled at {output_path} ({output_path.stat().st_size} bytes)")
         return output_path
+

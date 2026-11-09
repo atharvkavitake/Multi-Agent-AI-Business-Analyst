@@ -83,3 +83,4 @@ class BusinessReportAgent(BaseAgent):
         self, payload: DeterministicAnalysisPayload, start_time: Optional[float] = None, **kwargs
     ) -> ReportAgentResult:
         return self.run(payload, **kwargs)
+

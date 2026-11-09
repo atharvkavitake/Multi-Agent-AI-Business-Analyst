@@ -109,3 +109,4 @@ def test_pdf_report_and_chat_lifecycle(client):
 
     finally:
         client.delete(f"/api/datasets/{dataset_id}")
+

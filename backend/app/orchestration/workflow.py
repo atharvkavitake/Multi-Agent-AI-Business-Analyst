@@ -68,3 +68,4 @@ class AnalysisStatusResponse(BaseModel):
     started_at: str
     completed_at: Optional[str] = None
     errors: List[str] = Field(default_factory=list)
+

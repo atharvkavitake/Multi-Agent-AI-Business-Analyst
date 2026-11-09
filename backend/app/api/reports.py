@@ -38,3 +38,4 @@ async def download_report(analysis_id: str):
         filename=download_filename,
         media_type="application/pdf",
     )
+

@@ -207,3 +207,4 @@ class BusinessStrategyAgent(BaseAgent):
             recommendations=recs,
             strategic_focus_summary=focus_summary,
         )
+

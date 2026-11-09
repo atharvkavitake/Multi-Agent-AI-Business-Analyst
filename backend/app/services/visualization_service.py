@@ -366,3 +366,4 @@ class VisualizationService:
             y_axis_title=prof_col,
             description="Scatter distribution illustrating profit generation against transaction sales volume.",
         )
+

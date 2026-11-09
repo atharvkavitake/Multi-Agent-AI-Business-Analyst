@@ -67,3 +67,4 @@ async def get_chat_history(analysis_id: str):
     Retrieve question/answer history.
     """
     return _CHAT_HISTORY.get(analysis_id, [])
+

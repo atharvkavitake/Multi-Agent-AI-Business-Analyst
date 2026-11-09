@@ -13,10 +13,12 @@ from fastapi.staticfiles import StaticFiles
 from backend.app.config import get_settings, BASE_DIR
 from backend.app.database import check_database_connection, Base, engine
 from backend.app.utils.logging_config import setup_logging, get_logger
+import backend.app.models  # Ensures all ORM models are registered in Base metadata
 from backend.app.api.datasets import router as datasets_router
 from backend.app.api.analysis import router as analysis_router
 from backend.app.api.chat import router as chat_router
 from backend.app.api.reports import router as reports_router
+from backend.app.api.auth import router as auth_router
 
 settings = get_settings()
 setup_logging("DEBUG" if settings.DEBUG else "INFO")
@@ -83,6 +85,7 @@ app.add_middleware(
 
 
 # Include API Routers
+app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
 app.include_router(datasets_router, prefix=settings.API_V1_PREFIX)
 app.include_router(analysis_router, prefix=settings.API_V1_PREFIX)
 app.include_router(chat_router, prefix=settings.API_V1_PREFIX)

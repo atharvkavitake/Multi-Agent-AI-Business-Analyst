@@ -141,3 +141,4 @@ class QueryAgentResult(BaseModel):
     evidence_table: Optional[List[Dict[str, Any]]] = None
     chart_config: Optional[Dict[str, Any]] = None
     confidence_score: float = 1.0
+

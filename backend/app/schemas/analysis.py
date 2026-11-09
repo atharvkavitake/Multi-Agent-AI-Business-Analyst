@@ -135,3 +135,4 @@ class DeterministicAnalysisPayload(BaseModel):
     correlations: List[CorrelationPair]
     outliers: List[StatisticalOutlier]
     computed_at: str
+

@@ -71,3 +71,4 @@ function renderReportPreview(state) {
         `).join("");
     }
 }
+

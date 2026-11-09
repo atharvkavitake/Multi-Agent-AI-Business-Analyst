@@ -141,3 +141,4 @@ def test_agent_7_query_agent_group_by(sample_payload):
     assert result.chart_config is not None
     assert result.chart_config["type"] == "bar"
     assert len(result.chart_config["labels"]) > 0
+

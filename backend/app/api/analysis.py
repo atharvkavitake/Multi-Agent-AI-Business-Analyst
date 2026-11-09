@@ -129,3 +129,4 @@ async def delete_analysis(analysis_id: str):
     """
     AgentOrchestrator.delete_analysis(analysis_id)
     return {"success": True, "message": f"Analysis {analysis_id} deleted."}
+

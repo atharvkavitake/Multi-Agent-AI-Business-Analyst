@@ -191,3 +191,4 @@ function renderAllInsights(state) {
         }
     }
 }
+

@@ -217,3 +217,4 @@ class TrendAnalysisAgent(BaseAgent):
             seasonality_notes=facts.get("seasonality_notes", "Baseline trend tracking across observed periods."),
             forecast_warning="Historical regression slope. Real-world future performance will be subject to market variance.",
         )
+
