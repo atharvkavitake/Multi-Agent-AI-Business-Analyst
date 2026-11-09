@@ -114,3 +114,4 @@ const Auth = {
 document.addEventListener("DOMContentLoaded", () => {
     Auth.renderSidebarUserProfile();
 });
+

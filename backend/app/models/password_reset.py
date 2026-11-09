@@ -23,3 +23,4 @@ class PasswordReset(Base):
 
     # Relationships
     user = relationship("User", back_populates="password_resets")
+

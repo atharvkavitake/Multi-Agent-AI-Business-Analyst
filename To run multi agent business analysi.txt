@@ -1,0 +1,10 @@
+To run multi agent business analysis system
+# 1. Activate virtual environment
+.\venv\Scripts\Activate.ps1
+
+# 2. Run the development server
+uvicorn backend.app.main:app --reload --port 8000
+
+Interactive Enterprise UI: http://localhost:8000/app/
+Interactive Swagger API Docs: http://localhost:8000/docs
+Health Check Status: http://localhost:8000/health

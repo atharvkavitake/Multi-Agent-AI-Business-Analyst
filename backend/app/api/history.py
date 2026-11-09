@@ -83,3 +83,4 @@ async def delete_history_item(
 ):
     """Delete personal analysis record."""
     return HistoryService.delete_user_analysis(db=db, user_id=user.id, analysis_id=analysis_id)
+

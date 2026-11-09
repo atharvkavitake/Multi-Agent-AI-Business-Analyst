@@ -88,3 +88,4 @@ async def delete_account(
 ):
     """Permanently delete user account."""
     return AuthService.delete_account(db, user, request.password)
+

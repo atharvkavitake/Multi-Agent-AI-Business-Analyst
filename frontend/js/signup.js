@@ -161,3 +161,4 @@ document.addEventListener("DOMContentLoaded", () => {
         alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
 });
+
