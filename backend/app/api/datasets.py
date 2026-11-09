@@ -13,7 +13,9 @@ from backend.app.schemas.dataset import (
     DatasetListItem,
     DatasetUploadResponse,
 )
+from backend.app.schemas.analysis import DeterministicAnalysisPayload
 from backend.app.services.data_service import DataService
+from backend.app.services.analysis_service import AnalyticsService
 from backend.app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -66,6 +68,29 @@ async def get_dataset(dataset_id: str):
     Retrieve specific dataset metadata by UUID.
     """
     return DataService.get_dataset(dataset_id)
+
+
+@router.get(
+    "/{dataset_id}/profile",
+    response_model=DeterministicAnalysisPayload,
+    summary="Get deterministic analytical profile of dataset",
+    description=(
+        "Executes deterministic data profiling, quality scoring, KPI calculations, "
+        "correlation matrix, and statistical anomaly detection (IQR, Z-Score, Isolation Forest)."
+    ),
+)
+async def get_dataset_profile(dataset_id: str):
+    """
+    Run and return full deterministic analysis for an uploaded dataset.
+    """
+    dataset_meta = DataService.get_dataset(dataset_id)
+    df = DataService.get_dataset_dataframe(dataset_id)
+    payload = AnalyticsService.run_deterministic_analysis(
+        df=df,
+        dataset_id=dataset_id,
+        dataset_name=dataset_meta.filename,
+    )
+    return payload
 
 
 @router.delete(
